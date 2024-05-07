@@ -23,7 +23,7 @@ public class DefaultKiwiService implements KiwiService {
 
     public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
     {
-        this.flexibleSearchService = flexibleSearchService;
+        this.flexibleSearchervice = flexibleSearchService;
     }
 
     public List<InfraDemoItemModel> findInfraDemoItemByExampleNumberField(Long exampleNumberFieldValue) {
