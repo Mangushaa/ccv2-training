@@ -24,4 +24,8 @@
         <property name="flexibleSearchService" ref="flexibleSearchService"/>
     </bean>
 
+    <bean id="defaultKiwiService" class="com.acme.infra.demo.servicelayer.impl.DefaultKiwiService">
+        <property name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
 </beans>
