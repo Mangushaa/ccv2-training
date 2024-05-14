@@ -47,12 +47,7 @@
             }
         ],
         "extensions": {
-            "location": "hybris/config/localextensions.xml",
-            "exclude": [
-                "azurecloudhotfolder",
-                "cloudcommons",
-                "cloudhotfolder"
-            ]
+            "location": "hybris/config/localextensions.xml"
         }
     },
     "properties": [
@@ -527,7 +522,7 @@
             "properties": [
                 {
                     "key": "cluster.node.groups",
-                    "value": "integration,yHotfolderCandidate"
+                    "value": "integration,yHotfolderCandidate,backgroundProcessing"
                 }
             ],
             "webapps": [
