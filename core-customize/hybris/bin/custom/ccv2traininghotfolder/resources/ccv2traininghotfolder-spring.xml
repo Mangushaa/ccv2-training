@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file
+		http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="hotfolderInboundFileChannelMappings"/>
+        <property name="targetMethod" value="put"/>
+        <property name="arguments">
+            <list>
+                <bean class="java.util.regex.Pattern" factory-method="compile">
+                    <constructor-arg value="${cloud.hotfolder.mapping.product.file.name.pattern}"/>
+                </bean>
+                <ref bean="productCloudHotFolderChannel"/>
+            </list>
+        </property>
+    </bean>
+
+    <int:channel id="productCloudHotFolderChannel"/>
+
+    <int:service-activator input-channel="productCloudHotFolderChannel" output-channel="productBatchFilesHeaderInit"
+                           ref="productCloudHotFolderHeaderSetupTask"
+                           method="execute"/>
+
+    <int:channel id="productBatchFilesHeaderInit"/>
+
+    <int:service-activator input-channel="productBatchFilesHeaderInit" output-channel="batchFilesHeader"
+                           ref="productHeaderInitTask"
+                           method="execute"/>
+
+    <bean id="productCloudHotFolderHeaderSetupTask"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+        <property name="net" value="false"/>
+    </bean>
+
+    <bean id="productHeaderInitTask"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderInitTask">
+        <property name="sequenceIdParser" ref="productBatchSequenceIdParser"/>
+        <property name="languageParser" ref="batchLanguageParser"/>
+        <property name="fallbackLanguage" value="en"/>
+    </bean>
+
+    <bean id="productBatchSequenceIdParser"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.util.SequenceIdParser">
+        <property name="parser">
+            <bean class="de.hybris.platform.acceleratorservices.util.RegexParser">
+                <property name="regex" value="_(\d+)\.csv"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="productFeedMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="product"
+          p:converter-ref="cloudHotfolderProductConverter"/>
+
+    <bean id="cloudHotfolderProductConverter"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+        <property name="header">
+            <value>
+#{productImpexHeader}
+INSERT_UPDATE Product;code[unique=true];name[lang=$lang];$catalogVersion;$approved;
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>
+                ;{+0};{1};{2};{3}
+            </value>
+        </property>
+        <property name="type" value="Product"/>
+    </bean>
+
+    <bean id="productImpexHeader" class="java.lang.String">
+        <constructor-arg>
+            <value>
+$version=Staged
+$productCatalog=Default
+$catalogVersion=catalogVersion(catalog(id[default=$productCatalog]), version[default=$version])[unique=true]
+$lang=en
+$approved=approvalstatus(code)[default='check']
+            </value>
+        </constructor-arg>
+    </bean>
+</beans>

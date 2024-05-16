@@ -2,7 +2,7 @@
   <extensions>
     <!-- Uncomment the following if you have enabled Cloud Extension Pack-->
     <!--<path dir='${HYBRIS_BIN_DIR}/modules-cep'  autoload='false' />-->
-    
+
     <path dir='${HYBRIS_BIN_DIR}' autoload='false' />
 	  <extension name= 'adaptivesearch' />
 	  <extension name= 'adaptivesearchbackoffice' />
@@ -173,7 +173,7 @@
 	  <extension name= 'personalizationsearchweb' />
 	  <extension name= 'adminapi' />
 	  <extension name= 'auditreportservices' />
-	  <extension name= 'azuredtu' />							 
+	  <extension name= 'azuredtu' />
 	  <extension name= 'deltadetection' />
 	  <extension name= 'embeddedserver' />
 	  <extension name= 'groovynature' />
@@ -260,6 +260,7 @@
     <extension name='azurecloudhotfolder' />
     <extension name='cloudcommons' />
     <extension name='cloudhotfolder' />
+	<extension name='ccv2traininghotfolder' />
 
 
 <!-- Configuring Required Extensions and AddOns for SAP Commerce integration with SAP Cloud Platform Integration -->
@@ -272,7 +273,5 @@
     <extension name='sapmodelbackoffice'/>
     <extension name='saporderexchangebackoffice'/>
     <extension name='sapcoreaddon'/>-->
-
-
   </extensions>
 </hybrisconfig>

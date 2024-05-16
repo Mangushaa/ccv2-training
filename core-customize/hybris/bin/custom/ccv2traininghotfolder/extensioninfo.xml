@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+--><extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+           
+    
+    <extension abstractclassprefix="Generated" classprefix="Ccv2traininghotfolder" jaloLogicFree="true" managername="Ccv2traininghotfolderManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="ccv2traininghotfolder" usemaven="false">
+                  
+      
+        
+        <!-- for more information on maven managed libraries please consult https://wiki.hybris.com/x/Nq8sDQ -->
+                               
+      
+        
+        <!-- you should add all required extensions to this list, except platform extensions which are automatically required -->
+                         
+      
+        
+         <requires-extension name="azurecloudhotfolder"/>
+                         
+      
+
+      
+        
+        <coremodule generated="true" manager="edu.ccv2traininghotfolder.jalo.Ccv2traininghotfolderManager" packageroot="edu.ccv2traininghotfolder"/>
+                      
+        
+        <webmodule jspcompile="false" webroot="/ccv2traininghotfolder"/>
+
+    
+    </extension>
+              
+
+
+</extensioninfo>
